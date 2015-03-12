@@ -16,8 +16,8 @@ inline Print &operator <<(Print &obj, T arg)
 { obj.print(arg); return obj; }
 
 my_msg msg;
-my_sensor radio(6,7);
-//my_sensor radio;
+my_sensor radio(6,7); // rduino UNO with SoftSPI for W5100
+//my_sensor radio;  // debug version
 
 float outsideTemperature = UNDEFINDED_VALUE;
 float outsideHumidity = UNDEFINDED_VALUE;
@@ -35,8 +35,8 @@ float radiatorReturnTemperature = UNDEFINDED_VALUE;
 float floorInpTemperature = UNDEFINDED_VALUE;
 float floorReturnTemperature = UNDEFINDED_VALUE;
 
-static uint8_t mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-static uint8_t ip[] = { 192, 168, 1, 210 };
+static uint8_t mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+static uint8_t ip[] = {192, 168, 1, 210};
 
 #define PREFIX ""
 WebServer webserver(PREFIX, 80);
@@ -49,8 +49,8 @@ void printXmlNode(WebServer &server, String tag, float val) {
 }
 
 void printHtmlNode(WebServer &server, String tag, String metric, float val) {
-	if( val != UNDEFINDED_VALUE)
-	  server << "<div>" << tag << " = " << val << " " << metric << "</div>";
+  if (val != UNDEFINDED_VALUE)
+    server << "<div>" << tag << " = " << val << " " << metric << "</div>";
 }
 	  
 void xmlCmd(WebServer &server, WebServer::ConnectionType type, char *, bool) {
@@ -184,7 +184,7 @@ void loop(void) {
       radio.stopListening();
       unsigned long got_time = millis();
       // Send the final one back.
-      radio.write( &got_time, sizeof(unsigned long) );
+      radio.write(&got_time, sizeof(unsigned long));
       printf("Sent response.\n\r");
 
       // Now, resume listening so we catch the next packets.
